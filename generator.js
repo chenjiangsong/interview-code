@@ -54,9 +54,12 @@
 'use strict'
 
 function generator(sequencer) {
+	const args = [...arguments]
+	args.shift()
+	const func = sequencer(...args)
 	return {
 		next: function() {
-			return sequencer(1,2)()
+			return func()
 		}
 	}
 }
@@ -68,16 +71,14 @@ function dummySeq() {
 }
 
 function rangeSeq(start, step) {
-	let result
-	
 	return function() {
-		result = result + step
-		start = result
+		let result = start
+		start = start + step
 		return result
 	}
 }
 var seq = generator(rangeSeq, 1, 2)
-console.log(seq.next()); // 1
-console.log(seq.next()); // 3
-console.log(seq.next()); // 5
-console.log(seq.next()); // 7
+console.log(seq.next())  // 1
+console.log(seq.next())  // 3
+console.log(seq.next())  // 5
+console.log(seq.next())  // 7
