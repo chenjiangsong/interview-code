@@ -42,7 +42,7 @@ function addZero(num) {
 	return '零' + num
 }
 /*
-	数字转中文	
+	数字转中文
  */
 function num2Ch(num) {
 	const tens = Math.floor(num/10)
@@ -56,7 +56,7 @@ function num2Ch(num) {
 		return TEN + singleCh
 	} else if (tens > 1) {
 		return tenCh + TEN + singleCh
-	} 
+	}
 	return tenCh + singleCh
 }
 
