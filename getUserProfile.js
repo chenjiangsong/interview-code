@@ -49,17 +49,15 @@ var requestUserProfile = function(uidList){  // uidList 是一个数组，最大
 
 var getUserProfile = function(uid){
   // 你需要实现这个方法。
-  return userProfile.next(uid)
+  return userProfile.add(uid)
 }
 
-var userProfile = {
-  uidList:[],
-  next(uid) {
-    
+const userProfile = {
+  uidList: [],
+  add(id) {
+
   }
 }
-
-
 
 
 // getUserProfile(1)
