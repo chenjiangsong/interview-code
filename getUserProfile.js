@@ -49,16 +49,59 @@ var requestUserProfile = function(uidList){  // uidList 是一个数组，最大
 
 var getUserProfile = function(uid){
   // 你需要实现这个方法。
-  return userProfile.add(uid)
+  return reqSender.add(uid)
 }
-
-const userProfile = {
+const reqSender = {
   uidList: [],
-  add(id) {
-
+  timer: '',
+  promiseList: [],
+  add(uid) {
+    const self = this
+    self.uidList.push(uid)
+    return new Promise((resolve,reject) => {
+      self.promiseList.push({
+          uid: uid,
+          resolve: resolve,
+          reject: reject
+      })
+      if (!self.timer) {
+        self.timer = setTimeout(() => {
+          requestUserProfile(self.uidList).then((profileList) => {
+            self.promiseList.forEach(d => {
+              var profile = profileList.find(p => {
+                return p.uid === d.uid
+              })
+              if (profile) {
+                d.resolve(profile)
+              } else {
+                d.reject()
+              }
+            })
+          })
+        }, 100)
+      }
+    })
   }
 }
-
+// class reqSender {
+//   constructor(interval, request) {
+//     this.interval = interval
+//     this.request = request
+//     this.uidList = []
+//   }
+//
+//   _send() {
+//     this._sender
+//   }
+//
+//   add(uid) {
+//     this.uidList.push(uid)
+//     return this._sender.then((res) => {
+//       return res[uid]
+//     })
+//   }
+//
+// }
 
 // getUserProfile(1)
 // getUserProfile(2)
@@ -70,6 +113,9 @@ getUserProfile(1).then((profile) => {
 //
 getUserProfile(2).then((profile) => {
   console.log(profile.uid == 2)
+})
+getUserProfile(3).then((profile) => {
+  console.log(profile)
 })
 //
 // getUserProfile(1).then((profile) => {
